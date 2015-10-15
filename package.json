@@ -1,0 +1,29 @@
+{
+  "name": "music-gamut",
+  "version": "0.0.0",
+  "description": "Manipulate notes made easy",
+  "main": "gamut.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danigb/music-gamut.git"
+  },
+  "keywords": [
+    "notes",
+    "pitches",
+    "intervals",
+    "pitch",
+    "interval",
+    "transpose",
+    "music",
+    "theory"
+  ],
+  "author": "danigb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danigb/music-gamut/issues"
+  },
+  "homepage": "https://github.com/danigb/music-gamut#readme"
+}
