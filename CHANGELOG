@@ -1,0 +1,5 @@
+CHANGELOG
+
+[Master]
+- Add asIntervals and asNotes function
+- Add gamut function

@@ -4,7 +4,8 @@
   "description": "Manipulate notes made easy",
   "main": "gamut.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vows --spec test/*.js",
+    "docs": "docme README.md"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,13 @@
   "bugs": {
     "url": "https://github.com/danigb/music-gamut/issues"
   },
-  "homepage": "https://github.com/danigb/music-gamut#readme"
+  "homepage": "https://github.com/danigb/music-gamut#readme",
+  "dependencies": {
+    "interval-parser": "^0.10.0",
+    "pitch-op": "^0.1.0",
+    "pitch-parser": "^0.1.0"
+  },
+  "devDependencies": {
+    "vows": "^0.8.1"
+  }
 }
