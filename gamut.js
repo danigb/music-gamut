@@ -6,7 +6,14 @@ var isArray = Array.isArray
 
 // pitch or interval as a-pitch (array)
 var SEP = /\s*\|\s*|\s*,\s*|\s+/
+
+// pitch item transformations
+function map (fn) { return function (src) { return src.map(fn) } }
 function parse (i) { return isArray(i) ? i : (asPitch.parse(i) || asInterval.parse(i)) }
+function distanceFromTonic (i, ndx, array) { return op.subtract(array[0], i) }
+function octavize (i) { return i[2] === null ? [i[0], i[1], 0] : i }
+function semitones (i) { return i[0] + i[1] + 12 * i[2] }
+function comparator (a, b) { return semitones(a) - semitones(b) }
 
 /**
  * Create a gamut from a source. A gamut is an array of notes (more exactly, pitches)
@@ -24,8 +31,6 @@ gamut.arr = function (source) {
   else if (typeof source === 'string') return source.split(SEP)
   else return [ source ]
 }
-
-function map (fn) { return function (src) { return src.map(fn) } }
 
 function compose () {
   var fns = []
@@ -57,13 +62,14 @@ gamut.intervals = compose(map(asInterval.build))
  */
 gamut.notes = compose(map(asPitch.stringify))
 
-function distanceFromTonic (i, ndx, array) { return op.subtract(array[0], i) }
-function octavize (i) { return i[2] === null ? [i[0], i[1], 0] : i }
+/**
+ * Get harmonics: the distances from the first note/interval
+ *
+ * @example
+ * var harmonics = gamut.asIntervals(gamut.harmonics)
+ * harmonics('C E G') // => []
+ */
 gamut.harmonics = compose(map(distanceFromTonic), map(octavize))
-
-// utility: pitch sorter
-function comparator (a, b) { return semitones(a) - semitones(b) }
-function semitones (i) { return i[0] + i[1] + 12 * i[2] }
 
 /**
  * sort
@@ -72,19 +78,5 @@ function sort (src) {
   return [].concat(gamut(src)).sort(comparator)
 }
 gamut.sort = sort
-
-// utility
-function identity (e) { return e }
-/**
- * mapValues
- */
-function mapValues (fn, hash) {
-  fn = fn || identity
-  return Object.keys(hash).reduce(function (ret, key) {
-    ret[key] = fn(gamut(hash[key]))
-    return ret
-  }, {})
-}
-gamut.mapValues = mapValues
 
 module.exports = gamut
