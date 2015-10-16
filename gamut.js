@@ -43,12 +43,23 @@ function define (fn) {
  * or intervals in [a-pitch format]().
  *
  * Probably you don't need this function
+ *
+ * @param {String|Array} source - the gamut
+ * @return {Array} an array of arrays (each item is an a-pitch)
+ *
  */
 function gamut (source) {
   var g = gamut.arr(source)
   return isArray(g[0]) ? g : g.map(parse)
 }
 
+/**
+ * Create an array of a given source
+ *
+ * @param {String|Array|Object} source - the source
+ * @return {Array} the source converted to an array
+ *
+ */
 gamut.arr = function (source) {
   if (isArray(source)) return source
   else if (typeof source === 'string') return source.split(SEP)
@@ -56,25 +67,59 @@ gamut.arr = function (source) {
 }
 
 /**
+ * Decorate a function to return string intervals
+ *
+ * @param {Function} op - the operation to decorate
+ * @return {Function} a function that returns intervals
+ *
+ * @example
+ * var transpose = gamut.asIntervals(gamut.transpose)
+ */
+gamut.asIntervals = asType(asInterval.build)
+
+/**
  * Return the gamut as intervals
+ *
+ * @param {String|Array} source - the gamut
+ * @return {Array} an array of interval strings
  *
  * @example
  * intervals('C D E') // => [ '1P', '2M', '3M' ]
  */
-gamut.asIntervals = asType(asInterval.build)
 gamut.intervals = gamut.asIntervals(gamut)
+
+/**
+ * Decorate a function to return string pitches (notes)
+ *
+ * @param {Function} op - the operation to decorate
+ * @return {Function} a function that returns notes (pitches)
+ *
+ * @example
+ * var transpose = gamut.asNotes(gamut.transpose)
+ */
+gamut.asNotes = asType(asPitch.stringify)
 
 /**
  * Return the gamut as notes
  *
+ * @param {String|Array} source - the gamut
+ * @return {Array} an array of strings with the notes
+ *
  * @example
  * notes('D E') // => [ 'D', 'E' ]
  */
-gamut.asNotes = asType(asPitch.stringify)
 gamut.notes = gamut.asNotes(gamut)
 
 /**
- * transpose notes
+ * Transpose notes
+ *
+ * @param {String} tonic - the base pitch or null to get the harmonics
+ * @param {String|Array} source - the gamut
+ * @return {Array} the transposed notes or intervals
+ *
+ * @example
+ * gamut.notes.transpose('C', '1P 3M 5M') // => ['C', 'E', 'G']
+ * gamut.notes.transpose('M2', 'C D E') // => ['D', 'E', 'F#']
  */
 function transpose (tonic, src) {
   return gamut(src).map(transposer(parse(tonic)))
@@ -84,9 +129,11 @@ define(transpose)
 /**
  * Get harmonics: the distances from the first note/interval
  *
+ * @param {String|Array} source - the gamut
+ * @return {Array} the harmonics
+ *
  * @example
- * var harmonics = gamut.asIntervals(gamut.harmonics)
- * harmonics('C E G') // => []
+ * gamut.interval.harmonics('C E G') // => ['1P', '3M', '5P']
  */
 function harmonics (src) {
   return gamut(src).map(octavize).map(distanceFromTonic)
@@ -94,7 +141,13 @@ function harmonics (src) {
 define(harmonics)
 
 /**
- * sort
+ * Sort a gamut
+ *
+ * @param {String|Array} src - source
+ * @return {Array} the sorted array
+ *
+ * @example
+ * gamut.notes.sort('B A G') // => ['G', 'A', 'B']
  */
 function sort (src) {
   return [].concat(gamut(src)).sort(comparator)
