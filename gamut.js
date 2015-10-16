@@ -5,8 +5,8 @@ var op = require('pitch-op')
 var isArray = Array.isArray
 
 // pitch or interval as a-pitch (array)
-function asArray (i) { return isArray(i) ? i : (asPitch.parse(i) || asInterval.parse(i)) }
 var SEP = /\s*\|\s*|\s*,\s*|\s+/
+function parse (i) { return isArray(i) ? i : (asPitch.parse(i) || asInterval.parse(i)) }
 
 /**
  * Create a gamut from a source. A gamut is an array of notes (more exactly, pitches)
@@ -15,49 +15,56 @@ var SEP = /\s*\|\s*|\s*,\s*|\s+/
  * Probably you don't need this function
  */
 function gamut (source) {
+  var g = gamut.arr(source)
+  return isArray(g[0]) ? g : g.map(parse)
+}
+
+gamut.arr = function (source) {
   if (isArray(source)) return source
   else if (typeof source === 'string') return source.split(SEP)
   else return [ source ]
 }
 
-function arr (a) { return isArray(a[0]) ? a : a.map(asArray) }
-/**
- * map
- */
-function map (fn) { return function (src) { return arr(gamut(src)).map(fn) } }
-gamut.map = map
+function map (fn) { return function (src) { return src.map(fn) } }
+
+function compose () {
+  var fns = []
+  for (var i = 0, len = arguments.length; i < len; i++) {
+    fns.push(arguments[i])
+  }
+  fns = fns.reverse()
+  return function (src) {
+    return fns.reduce(function (g, fn) {
+      return fn(g)
+    }, gamut(src))
+  }
+}
+gamut.fn = compose
 
 /**
  * Return the gamut as intervals
  *
  * @example
- * asIntervals('C D E') // => [ '1P', '2M', '3M' ]
+ * intervals('C D E') // => [ '1P', '2M', '3M' ]
  */
-gamut.asIntervals = map(asInterval.build)
+gamut.intervals = compose(map(asInterval.build))
 
 /**
  * Return the gamut as notes
  *
  * @example
- * asNotes('D E') // => [ 'D', 'E' ]
+ * notes('D E') // => [ 'D', 'E' ]
  */
-gamut.asNotes = map(asPitch.stringify)
+gamut.notes = compose(map(asPitch.stringify))
 
-
-/**
- * normalize
- */
-function normalize (i, ndx, array) { return op.subtract(array[0], i) }
-gamut.normalize = map(normalize)
-
-/**
- * semitones
- */
-function semitones (i) { return i[0] + i[1] + 12 * i[2] }
-gamut.semitones = map(semitones)
+function distanceFromTonic (i, ndx, array) { return op.subtract(array[0], i) }
+function octavize (i) { return i[2] === null ? [i[0], i[1], 0] : i }
+gamut.harmonics = compose(map(distanceFromTonic), map(octavize))
 
 // utility: pitch sorter
 function comparator (a, b) { return semitones(a) - semitones(b) }
+function semitones (i) { return i[0] + i[1] + 12 * i[2] }
+
 /**
  * sort
  */
@@ -65,16 +72,6 @@ function sort (src) {
   return [].concat(gamut(src)).sort(comparator)
 }
 gamut.sort = sort
-
-// utility: set octave to 0
-function octavize (i) { return i[2] === null ? [i[0], i[1], 0] : i }
-/**
- * intervals
- */
-function intervals (src) {
-  return gamut(src).map(octavize).map(normalize).sort(comparator)
-}
-gamut.intervals = intervals
 
 // utility
 function identity (e) { return e }
