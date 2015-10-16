@@ -1,5 +1,13 @@
 CHANGELOG
 
 [Master]
-- Add asIntervals and asNotes function
-- Add gamut function
+
+[0.1.0]
+- First implementation with odd api (gamut.notes, gamut.intervals)
+
+BENCHMARKS
+[0.2.0] 42,143 / 43,331
+[0.1.0] 38,339 / 42,314
+
+SIZES
+[0.1.0] 11434 / 5301

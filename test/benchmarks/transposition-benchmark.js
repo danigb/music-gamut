@@ -14,12 +14,12 @@ function generateNotes (size) {
 var notes = generateNotes(20)
 var transpose = function (note) { return teoria.note(note).interval('M3').toString() }
 
-console.log('gamut', gamut.notes.transpose('3M', notes).join(' '))
+console.log('gamut', gamut.transpose('3M', notes).join(' '))
 console.log('teoria', notes.map(transpose).join(' '))
 
 var suite = new Benchmark.Suite()
 suite.add('gamut transposition', function () {
-  gamut.notes.transpose('3M', notes)
+  gamut.transpose('3M', notes)
 })
 .add('teoria transposition', function () {
   notes.map(transpose)
