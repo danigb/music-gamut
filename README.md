@@ -41,46 +41,6 @@ gamut.notes('C | D E | F') // => ['C', 'D', 'E', 'F']
 </div>
 <dl>
 <dt>
-<h4 class="name" id="asIntervals"><span class="type-signature"></span>asIntervals<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Return the gamut as intervals</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L37">lineno 37</a>
-</li>
-</ul></dd>
-</dl>
-<h5>Example</h5>
-<pre class="prettyprint"><code>asIntervals('C D E') // => [ '1P', '2M', '3M' ]</code></pre>
-</dd>
-<dt>
-<h4 class="name" id="asNotes"><span class="type-signature"></span>asNotes<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Return the gamut as notes</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L48">lineno 48</a>
-</li>
-</ul></dd>
-</dl>
-<h5>Example</h5>
-<pre class="prettyprint"><code>asNotes('D E') // => [ 'D', 'E' ]</code></pre>
-</dd>
-<dt>
 <h4 class="name" id="gamut"><span class="type-signature"></span>gamut<span class="signature">()</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
@@ -95,17 +55,17 @@ or intervals in <a href="">a-pitch format</a>.</p>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L17">lineno 17</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L47">lineno 47</a>
 </li>
 </ul></dd>
 </dl>
 </dd>
 <dt>
-<h4 class="name" id="intervals"><span class="type-signature"></span>intervals<span class="signature">()</span><span class="type-signature"></span></h4>
+<h4 class="name" id="harmonics"><span class="type-signature"></span>harmonics<span class="signature">()</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>intervals</p>
+<p>Get harmonics: the distances from the first note/interval</p>
 </div>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
@@ -113,82 +73,13 @@ or intervals in <a href="">a-pitch format</a>.</p>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L86">lineno 86</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L91">lineno 91</a>
 </li>
 </ul></dd>
 </dl>
-</dd>
-<dt>
-<h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>map</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L56">lineno 56</a>
-</li>
-</ul></dd>
-</dl>
-</dd>
-<dt>
-<h4 class="name" id="mapValues"><span class="type-signature"></span>mapValues<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>mapValues</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L96">lineno 96</a>
-</li>
-</ul></dd>
-</dl>
-</dd>
-<dt>
-<h4 class="name" id="normalize"><span class="type-signature"></span>normalize<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>normalize</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L62">lineno 62</a>
-</li>
-</ul></dd>
-</dl>
-</dd>
-<dt>
-<h4 class="name" id="semitones"><span class="type-signature"></span>semitones<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>semitones</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L68">lineno 68</a>
-</li>
-</ul></dd>
-</dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>var harmonics = gamut.asIntervals(gamut.harmonics)
+harmonics('C E G') // => []</code></pre>
 </dd>
 <dt>
 <h4 class="name" id="sort"><span class="type-signature"></span>sort<span class="signature">()</span><span class="type-signature"></span></h4>
@@ -203,7 +94,25 @@ or intervals in <a href="">a-pitch format</a>.</p>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L76">lineno 76</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L99">lineno 99</a>
+</li>
+</ul></dd>
+</dl>
+</dd>
+<dt>
+<h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">()</span><span class="type-signature"></span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>transpose notes</p>
+</div>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L79">lineno 79</a>
 </li>
 </ul></dd>
 </dl>
