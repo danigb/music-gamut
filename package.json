@@ -34,6 +34,8 @@
     "pitch-parser": "^0.1.0"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
+    "teoria": "^2.1.1",
     "vows": "^0.8.1"
   }
 }
