@@ -1,6 +1,6 @@
 {
   "name": "music-gamut",
-  "version": "0.2.0-pre",
+  "version": "0.2.0",
   "description": "Manipulate notes made easy",
   "main": "gamut.js",
   "scripts": {
