@@ -1,5 +1,11 @@
 CHANGELOG
 
+[next]
+- add gamut.distances
+- rename gamut.add to gamut.transpose
+- Better test and code organization
+- Merge gamut and gamut.parse
+
 [0.2.0]
 - Change API: you must decorate any function to return note names or intervals
 
