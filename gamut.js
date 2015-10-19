@@ -60,6 +60,7 @@ gamut.fn = function (operations) {
 gamut.asArray = function (source) {
   if (isArray(source)) return source
   else if (typeof source === 'string') return source.split(SEP)
+  else if (source === null || typeof source === 'undefined') return []
   else return [ source ]
 }
 
@@ -187,9 +188,9 @@ function add (interval, source) {
 }
 gamut.add = add
 
-// set all intervals relative to first
-function normalize (first, arr) {
-  return arr.map(function (i) { return i ? op.subtract(first, i) : null })
+// all intervals relative to tonic
+function normalize (tonic, arr) {
+  return arr.map(function (i) { return i ? op.subtract(tonic, i) : null })
 }
 
 /**
@@ -238,7 +239,7 @@ gamut.uniq = function (source) {
 gamut.set = function (source) {
   var simplify = map(op.simplify)
   var parsed = parse(source)
-  var first = [parsed[0][0], parsed[0][1], null]
+  var first = parsed[0] ? op.pitchClass(parsed[0]) : null
   return gamut.uniq(gamut.sort(simplify(normalize(first, parsed))))
 }
 

@@ -41,6 +41,9 @@ vows.describe('gamut').addBatch({
     },
     'order by frequency': function () {
       assert.deepEqual(gamut.asNotes(gamut.set('1 3 2')), ['C0', 'D0', 'E0'])
+    },
+    'empty set': function () {
+      assert.deepEqual(gamut.set(null), [])
     }
   },
   'classes': {
@@ -60,6 +63,14 @@ vows.describe('gamut').addBatch({
   'uniq': {
     'remove duplicates': function () {
       assert.deepEqual(gamut.asNotes(gamut.uniq('C D C e g d c c4')), ['C', 'D', 'E', 'G', 'C4'])
+    }
+  },
+  'asArray': {
+    'string array': function () {
+      assert.deepEqual(gamut.asArray('C D E, F,   G |     A  , B'), ['C', 'D', 'E', 'F', 'G', 'A', 'B'])
+      assert.deepEqual(gamut.asArray(['A', 1]), ['A', 1])
+      assert.deepEqual(gamut.asArray(null), [ ])
+      assert.deepEqual(gamut.asArray(), [ ])
     }
   }
 }).export(module)

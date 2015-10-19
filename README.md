@@ -69,7 +69,7 @@ Probably you will want to decorate this function with <code>gamut.notes</code> o
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L162">lineno 162</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L163">lineno 163</a>
 </li>
 </ul></dd>
 </dl>
@@ -179,7 +179,7 @@ gamut.asArray(null) // => [ ]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L134">lineno 134</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L135">lineno 135</a>
 </li>
 </ul></dd>
 </dl>
@@ -237,7 +237,7 @@ addIntervals('2M', '1P 5P') // => ['2M', '6M']</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L116">lineno 116</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L117">lineno 117</a>
 </li>
 </ul></dd>
 </dl>
@@ -450,7 +450,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L195">lineno 195</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L196">lineno 196</a>
 </li>
 </ul></dd>
 </dl>
@@ -513,7 +513,7 @@ harmonics('D F# A') // => ['1P', '3M', '5P']</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L66">lineno 66</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L67">lineno 67</a>
 </li>
 </ul></dd>
 </dl>
@@ -569,7 +569,7 @@ octaveUp([ [0, 0, 0], [1, 0, 0] ]) // => [ [0, 0, 1], [1, 0, 1]]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L91">lineno 91</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L92">lineno 92</a>
 </li>
 </ul></dd>
 </dl>
@@ -602,7 +602,7 @@ gamut.parse('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L156">lineno 156</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L157">lineno 157</a>
 </li>
 </ul></dd>
 </dl>
@@ -641,7 +641,7 @@ gamut.parse('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L230">lineno 230</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L231">lineno 231</a>
 </li>
 </ul></dd>
 </dl>
@@ -746,7 +746,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L245">lineno 245</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L246">lineno 246</a>
 </li>
 </ul></dd>
 </dl>
@@ -858,7 +858,7 @@ gamut.notes.transpose('M2', 'C D E') // => ['D', 'E', 'F#']</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L212">lineno 212</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L213">lineno 213</a>
 </li>
 </ul></dd>
 </dl>
