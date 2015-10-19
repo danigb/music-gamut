@@ -192,9 +192,9 @@ function normalize (tonic, arr) {
  * var harmonics = gamut.asIntervals(gamut.harmonics)
  * harmonics('D F# A') // => ['1P', '3M', '5P']
  */
-gamut.harmonics = function (src) {
-  var gamutd = gamut(src).map(op.setDefaultOctave(0))
-  return normalize(gamutd[0], gamutd)
+gamut.harmonics = function (source) {
+  var src = gamut(source).map(op.setDefaultOctave(0))
+  return gamut.distances(src[0], src)
 }
 
 // ////////////// MUTATE //////////////
