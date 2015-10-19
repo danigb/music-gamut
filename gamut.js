@@ -1,157 +1,260 @@
+'use strict'
+
 var asPitch = require('pitch-parser')
 var asInterval = require('interval-parser')
 var op = require('pitch-op')
 
+var toNotes = map(function (p) { return typeof p === 'string' ? p : asPitch(p) })
+var toIntervals = map(function (i) { return typeof i === 'string' ? i : asInterval(i) })
+function asPitchArray (i) { return isArray(i) ? i : (asPitch(i) || asInterval(i)) }
+
+// separator pattern to convert a list string to an array
+var SEP = /\s*\|\s*|\s*,\s*|\s+/
 var isArray = Array.isArray
 
-// pitch or interval as a-pitch (array)
-var SEP = /\s*\|\s*|\s*,\s*|\s+/
-
-// pitch item transformations
-function parse (i) { return isArray(i) ? i : (asPitch.parse(i) || asInterval.parse(i)) }
-function distanceFromTonic (i, ndx, array) { return op.subtract(array[0], i) }
-function octavize (i) { return i[2] === null ? [i[0], i[1], 0] : i }
-function semitones (i) { return i[0] + i[1] + 12 * i[2] }
-function comparator (a, b) { return semitones(a) - semitones(b) }
-function transposer (tonic) {
-  return function (i) {
-    return op.add(i, tonic)
-  }
-}
-
-// utility: use a builder to convert the result of a function
-function asType (builder) {
-  return function (fn) {
-    return function (src) {
-      if (arguments.length === 1) return fn(src).map(builder)
-      var args = [].slice.call(arguments)
-      return fn.apply(null, args).map(builder)
-    }
-  }
-}
-
-// utility: define a gamut transformation
-function define (fn) {
-  var name = fn.name
-  gamut[name] = fn
-  gamut.notes[name] = gamut.asNotes(fn)
-  gamut.intervals[name] = gamut.asIntervals(fn)
+// not documented because I don't know what to do
+function gamut (operations, source) {
+  return gamut.parse(source)
 }
 
 /**
- * Create a gamut from a source. A gamut is an array of notes (more exactly, pitches)
- * or intervals in [a-pitch format]().
+ * Compose functions
  *
- * Probably you don't need this function
- *
- * @param {String|Array} source - the gamut
- * @return {Array} an array of arrays (each item is an a-pitch)
- *
+ * @name fn
+ * @function
+ * @param {Array<Function>} operation - an array of functions to compoase
+ * @return {Function} the composed function
  */
-function gamut (source) {
-  var g = gamut.arr(source)
-  return isArray(g[0]) ? g : g.map(parse)
+gamut.fn = function (operations) {
+  var ops = operations.reverse()
+  var len = ops.length
+  return function (value) {
+    var arr = gamut.asArray(value)
+    for (var i = 0; i < len; i++) {
+      arr = ops[i].call(null, arr)
+    }
+    return arr
+  }
 }
 
 /**
- * Create an array of a given source
+ * Get an array from a source. The source can be a string separated by
+ * spaces, commas or bars (`|`), an array or an object.
  *
+ * This function does not perform any transformation to the items of the array.
+ * This function __always__ return an array, even if its empty
+ *
+ * @name asArray
+ * @function
  * @param {String|Array|Object} source - the source
  * @return {Array} the source converted to an array
  *
+ * @example
+ * gamut.asArray('c d e') // => [ 'c', 'd', 'e' ]
+ * gamut.asArray('CMaj7 | Dm7 G7') // => [ 'CMaj7', 'Dm7', 'G7' ]
+ * gamut.asArray('1, 2, 3') // => ['1', '2', '3']
+ * gamut.asArray([1, 'a', 3]) // => [1, 'a', 3]
+ * gamut.asArray(object) // => [ object ]
+ * gamut.asArray(null) // => [ ]
  */
-gamut.arr = function (source) {
+gamut.asArray = function (source) {
   if (isArray(source)) return source
   else if (typeof source === 'string') return source.split(SEP)
   else return [ source ]
 }
 
 /**
- * Decorate a function to return string intervals
+ * Get a gamut mapped to a function
  *
- * @param {Function} op - the operation to decorate
- * @return {Function} a function that returns intervals
+ * Is important to notice that the function will receive pitches in pitch-array notation format.
  *
- * @example
- * var transpose = gamut.asIntervals(gamut.transpose)
- */
-gamut.asIntervals = asType(asInterval.build)
-
-/**
- * Return the gamut as intervals
+ * This function can be partially applied (Function -> Array -> Array)
  *
+ * @name map
+ * @function
+ * @param {Function} fn - the function to map the gamut with
  * @param {String|Array} source - the gamut
- * @return {Array} an array of interval strings
+ * @return {Array} the mapped gamut
  *
  * @example
- * intervals('C D E') // => [ '1P', '2M', '3M' ]
+ * var addOctave = function(p) { return [p[0], p[1], p[2] + 1]}
+ * gamut.map(addOctave, [ [0, 0, 0], [1, 0, 0] ]) // => [ [0, 0, 1], [1, 0, 1]]
+ * var octaveUp = gamut.map(addOctave)
+ * octaveUp([ [0, 0, 0], [1, 0, 0] ]) // => [ [0, 0, 1], [1, 0, 1]]
  */
-gamut.intervals = gamut.asIntervals(gamut)
-
-/**
- * Decorate a function to return string pitches (notes)
- *
- * @param {Function} op - the operation to decorate
- * @return {Function} a function that returns notes (pitches)
- *
- * @example
- * var transpose = gamut.asNotes(gamut.transpose)
- */
-gamut.asNotes = asType(asPitch.stringify)
-
-/**
- * Return the gamut as notes
- *
- * @param {String|Array} source - the gamut
- * @return {Array} an array of strings with the notes
- *
- * @example
- * notes('D E') // => [ 'D', 'E' ]
- */
-gamut.notes = gamut.asNotes(gamut)
-
-/**
- * Transpose notes
- *
- * @param {String} tonic - the base pitch or null to get the harmonics
- * @param {String|Array} source - the gamut
- * @return {Array} the transposed notes or intervals
- *
- * @example
- * gamut.notes.transpose('C', '1P 3M 5M') // => ['C', 'E', 'G']
- * gamut.notes.transpose('M2', 'C D E') // => ['D', 'E', 'F#']
- */
-function transpose (tonic, src) {
-  return gamut(src).map(transposer(parse(tonic)))
+function map (fn, src) {
+  if (arguments.length > 1) return map(fn)(src)
+  return function (src) { return gamut.asArray(src).map(fn) }
 }
-define(transpose)
+gamut.map = map
 
 /**
- * Get harmonics: the distances from the first note/interval
+ * Convert a list of notes or intervals to pitch-array notation format
  *
+ * @name parse
+ * @function
  * @param {String|Array} source - the gamut
- * @return {Array} the harmonics
+ * @return {Array} the gamut with notes or intervals in pitch-array notation format
  *
  * @example
- * gamut.interval.harmonics('C E G') // => ['1P', '3M', '5P']
+ * gamut.parse('C D E') // => [ [0, 0, null], [1, 0, null], [2, 0, null] ]
+ * gamut.parse('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]
  */
-function harmonics (src) {
-  return gamut(src).map(octavize).map(distanceFromTonic)
+function parse (source) { return gamut.asArray(source).map(asPitchArray) }
+gamut.parse = parse
+
+function decorate (builder, parser, fn) {
+  return function () {
+    var len = arguments.length
+    if (len === 0) return []
+    var args = Array.prototype.slice.call(arguments)
+    args[len - 1] = parser(args[len - 1])
+    return builder(fn.apply(null, args))
+  }
 }
-define(harmonics)
 
 /**
- * Sort a gamut
+ * Get notes from a gamut, or decorate a function to return notes
  *
- * @param {String|Array} src - source
- * @return {Array} the sorted array
+ * @name notes
+ * @function
+ * @param {Array<Array>|Function} source
+ * @return {Array<String>|Function} an array of strings with note names or a function
+ * decorated to return an array of pitch strings
  *
  * @example
- * gamut.notes.sort('B A G') // => ['G', 'A', 'B']
+ * gamut.notes('1P 2M 3M') // => ['C0', 'D0', 'E0']
+ * var transpose = gamut.notes(gamut.add)
+ * transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]
  */
-function sort (src) {
-  return [].concat(gamut(src)).sort(comparator)
+gamut.notes = function (src) {
+  return typeof src === 'function' ? decorate(toNotes, parse, src) : toNotes(parse(src))
 }
-define(sort)
+
+/**
+ * Get the gamut as intervals or decorate a function to return intervals
+ *
+ * @name intervals
+ * @function
+ * @param {Array<Array>|Function} source
+ * @return {Array<String>|Function} an array of strings with note names or a function
+ * decorated to return an array of pitch strings
+ *
+ * @example
+ * gamut.intervals('C D E') // => []
+ * var addIntervals = gamut.intervals(gamut.add)
+ * addIntervals('2M', '1P 5P') // => ['2M', '6M']
+ */
+function intervals (src) {
+  return typeof src === 'function' ? decorate(toIntervals, parse, src) : toIntervals(parse(src))
+}
+gamut.intervals = intervals
+
+/**
+ * Get the pitch classes of a gamut
+ *
+ */
+function pitchClass (src) {
+  var toPitchClasses = map(op.pitchClass)
+  if (typeof src !== 'function') return toNotes(toPitchClasses(parse(src)))
+}
+gamut.pitchClass = pitchClass
+
+/**
+ * Add interval to a gamut
+ *
+ * Like all the functions from gamut, this works with pitch-array notation format arrays.
+ * Probably you will want to decorate this function with `gamut.notes` or
+ * `gamut.intervals` (see example)
+ *
+ * @name add
+ * @param {String} interval - the interval to add
+ * @param {String|Array} source - the gamut
+ * @return {Array} the gamut added an interval
+ *
+ * @example
+ * gamut.add([1, 0, 0], [ [1, 0, 0], [2, 0, 0]]) // => [ [2, 0, 0], [3, 1, 0] ]
+ * var transpose = gamut.notes(gamut.add)
+ * transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]
+ * var addIntervals = gamut.intevals(gamut.add)
+ * addIntervals('2M', '1P 2M 3M') // => [ '2M', '3M', '4A' ]
+ */
+function add (interval, source) {
+  var i = asPitchArray(interval)
+  if (!i) return parse(source)
+  return source.map(function (pitch) {
+    return pitch ? op.add(pitch, i) : null
+  })
+}
+gamut.add = add
+
+// set all intervals relative to first
+function normalize (first, arr) {
+  return arr.map(function (i) { return i ? op.subtract(first, i) : null })
+}
+
+/**
+ * Get the harmonics (the intervals of the notes relative to the first one)
+ *
+ * @name harmonics
+ * @function
+ * @param {String|Array<Array>} source - the gamut
+ * @return {Array<Array>} the gamut harmonics
+ *
+ * @example
+ * var harmonics = gamut.intervals(gamut.harmonics)
+ * harmonics('D F# A') // => ['1P', '3M', '5P']
+ */
+gamut.harmonics = function (src) {
+  var parsed = parse(src).map(op.setDefaultOctave(0))
+  return normalize(parsed[0], parsed)
+}
+
+/**
+ * Remove duplicates from a gamut
+ *
+ * @name uniq
+ * @function
+ * @param {String|Array<Array>} source - the gamut
+ * @return {Array<Array>} the gamut without duplicates
+ */
+gamut.uniq = function (source) {
+  source = parse(source)
+  var semitones = source.map(op.semitones)
+  return source.reduce(function (uniq, current, currentIndex) {
+    var index = semitones.indexOf(op.semitones(current))
+    if (index === currentIndex) uniq.push(current)
+    return uniq
+  }, [])
+}
+
+/**
+ * Get a pitch or interval set.
+ *
+ * @name set
+ * @function
+ * @param {String|Array<Array>} source - the gamut
+ * @return {Array<Array>} the pitch set
+ */
+gamut.set = function (source) {
+  var simplify = map(op.simplify)
+  var parsed = parse(source)
+  var first = [parsed[0][0], parsed[0][1], null]
+  return gamut.uniq(gamut.sort(simplify(normalize(first, parsed))))
+}
+
+/**
+ * Sort a gamut by pitch height (frequency)
+ *
+ * Notice that this functions __doesn't__ mutate the original gamut.
+ *
+ * @name sort
+ * @function
+ * @param {String|Array<Array>} source - the gamut
+ * @return {Array<Array>} the sorted gamut
+ */
+gamut.sort = function (source) {
+  return parse(source).sort(op.comparator())
+}
 
 module.exports = gamut

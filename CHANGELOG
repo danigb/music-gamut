@@ -1,5 +1,19 @@
 CHANGELOG
 
-[Master]
-- Add asIntervals and asNotes function
-- Add gamut function
+[0.2.0]
+- Change API: you must decorate any function to return note names or intervals
+
+[0.1.0]
+- First implementation with odd api (gamut.notes, gamut.intervals)
+
+BENCHMARKS
+
+[0.2.0]
+gamut transposition x 59,455 ops/sec ±0.78% (98 runs sampled)
+teoria transposition x 41,513 ops/sec ±0.62% (95 runs sampled)
+
+[0.1.0] 38,339 / 42,314
+
+SIZES
+[0.2.0] 21113 / 7356
+[0.1.0] 11434 / 5301

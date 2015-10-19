@@ -1,50 +1,65 @@
 var vows = require('vows')
 var assert = require('assert')
-var gamut = require('../')
+var gamut = require('../gamut')
 
 vows.describe('gamut').addBatch({
-  'transpose': {
-    'note transposition': function () {
-      var tranpose = gamut.notes.transpose
-      assert.equal(tranpose('2M', 'C D E').join(' '), 'D E F#')
-    }
+  'map': function () {
+    var addOctave = function (p) { return [p[0], p[1], p[2] + 1] }
+    var src = [ [0, 0, 0], [1, 0, 0] ]
+    assert.deepEqual(gamut.map(addOctave, src), [ [ 0, 0, 1 ], [ 1, 0, 1 ] ])
+    var octaveUp = gamut.map(addOctave)
+    assert.deepEqual(octaveUp(src), [ [ 0, 0, 1 ], [ 1, 0, 1 ] ])
+  },
+  'add': function () {
+    var src = [ [0, 0, 0], [1, 0, 0], [2, 0, 0] ]
+    assert.deepEqual(gamut.add('2M', src), [ [ 1, 0, 0 ], [ 2, 0, 0 ], [ 3, 1, 0 ] ])
+  },
+  'notes': function () {
+    var transpose = gamut.notes(gamut.add)
+    assert.deepEqual(transpose('2M', 'C D E'), [ 'D', 'E', 'F#' ])
   },
   'harmonics': {
-    'simple harmonics': function () {
-      assert.deepEqual(gamut.intervals.harmonics('C D E'), [ '1P', '2M', '3M' ])
-      assert.equal(gamut.intervals.harmonics('D E F').join(' '), '1P 2M 3m')
+    'interval harmonics': function () {
+      assert.deepEqual(gamut.intervals(gamut.harmonics('1 2 3 9')),
+        [ '1P', '2M', '3M', '9M' ])
+    },
+    'note harmonics': function () {
+      assert.deepEqual(gamut.intervals(gamut.harmonics('C2 G3 B2')),
+        [ '1P', '12P', '7M' ])
+      assert.deepEqual(gamut.intervals(gamut.harmonics('C E G B D1')),
+        [ '1P', '3M', '5P', '7M', '9M' ])
     }
   },
-  'sort': {
-    'note sorting': function () {
-      assert.equal(gamut.notes.sort('B C G').join(' '), 'C G B')
+  'set': {
+    'set to octave 0': function () {
+      assert.deepEqual(gamut.notes(gamut.set('1 2 3')), ['C0', 'D0', 'E0'])
+      assert.deepEqual(gamut.notes(gamut.set('8 9 10')), ['C0', 'D0', 'E0'])
+      assert.deepEqual(gamut.notes(gamut.set('C2 D3 E4')), ['C0', 'D0', 'E0'])
+    },
+    'remove duplicates': function () {
+      assert.deepEqual(gamut.notes(gamut.set('1 1 2 2 3 3')), ['C0', 'D0', 'E0'])
+    },
+    'order by frequency': function () {
+      assert.deepEqual(gamut.notes(gamut.set('1 3 2')), ['C0', 'D0', 'E0'])
     }
   },
-  'arr': {
-    'from string': function () {
-      assert.deepEqual(gamut.arr('1   2'), ['1', '2'])
-      assert.deepEqual(gamut.arr('1 2'), ['1', '2'])
-      assert.deepEqual(gamut.arr('1 , 2'), ['1', '2'])
-      assert.deepEqual(gamut.arr('1, 2'), ['1', '2'])
-      assert.deepEqual(gamut.arr('1 | 2'), ['1', '2'])
-    },
-    'anything is valid': function () {
-      assert.deepEqual(gamut.arr('1 blah 2'), ['1', 'blah', '2'])
-    },
-    'always a gamut': function () {
-      assert.deepEqual(gamut.arr(null), [null])
+  'classes': {
+    'get pitch classes': function () {
+      assert.deepEqual(gamut.pitchClass('C2 D3 E4 C5'), ['C', 'D', 'E', 'C'])
     }
   },
   'intervals': {
-    'intervals': function () {
+    'decorate function': function () {
+      var add = gamut.intervals(gamut.add)
+      assert.deepEqual(add('2M', 'C D E'), [ '2M', '3M', '4A' ])
+    },
+    'get intervals': function () {
       assert.deepEqual(gamut.intervals('C D E'), [ '1P', '2M', '3M' ])
-      assert.equal(gamut.intervals('1 2').join(' '), '1P 2M')
     }
   },
-  'notes': {
-    'pitches': function () {
-      assert.deepEqual(gamut.notes('D E'), [ 'D', 'E' ])
-      assert.equal(gamut.notes('1 2 3 4 5').join(' '), 'C0 D0 E0 F0 G0')
+  'uniq': {
+    'remove duplicates': function () {
+      assert.deepEqual(gamut.notes(gamut.uniq('C D C e g d c c4')), ['C', 'D', 'E', 'G', 'C4'])
     }
   }
 }).export(module)

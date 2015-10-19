@@ -12,17 +12,23 @@ function generateNotes (size) {
   return result
 }
 var notes = generateNotes(20)
-var transpose = function (note) { return teoria.note(note).interval('M3').toString() }
 
-console.log('gamut', gamut.notes.transpose('3M', notes).join(' '))
-console.log('teoria', notes.map(transpose).join(' '))
+var gamutTranspose = gamut.notes(gamut.add)
+var teoriaTranspose = function (interval, notes) {
+  return notes.map(function (note) {
+    return teoria.note(note).interval(interval).toString()
+  })
+}
+
+console.log('gamut', gamutTranspose('3M', notes).join(' '))
+console.log('gamut', teoriaTranspose('M3', notes).join(' '))
 
 var suite = new Benchmark.Suite()
 suite.add('gamut transposition', function () {
-  gamut.notes.transpose('3M', notes)
+  gamutTranspose('3M', notes)
 })
 .add('teoria transposition', function () {
-  notes.map(transpose)
+  teoriaTranspose('M3', notes)
 })
 .on('cycle', function (event) {
   console.log(String(event.target))
