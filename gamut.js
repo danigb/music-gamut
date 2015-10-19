@@ -116,39 +116,38 @@ function decorate (builder, parser, fn) {
 /**
  * Get notes from a gamut, or decorate a function to return notes
  *
- * @name notes
+ * @name asNotes
  * @function
  * @param {Array<Array>|Function} source
  * @return {Array<String>|Function} an array of strings with note names or a function
  * decorated to return an array of pitch strings
  *
  * @example
- * gamut.notes('1P 2M 3M') // => ['C0', 'D0', 'E0']
- * var transpose = gamut.notes(gamut.add)
+ * gamut.asNotes('1P 2M 3M') // => ['C0', 'D0', 'E0']
+ * var transpose = gamut.asNotes(gamut.add)
  * transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]
  */
-gamut.notes = function (src) {
+gamut.asNotes = function (src) {
   return typeof src === 'function' ? decorate(toNotes, parse, src) : toNotes(parse(src))
 }
 
 /**
  * Get the gamut as intervals or decorate a function to return intervals
  *
- * @name intervals
+ * @name asIntervals
  * @function
  * @param {Array<Array>|Function} source
  * @return {Array<String>|Function} an array of strings with note names or a function
  * decorated to return an array of pitch strings
  *
  * @example
- * gamut.intervals('C D E') // => []
- * var addIntervals = gamut.intervals(gamut.add)
+ * gamut.asIntervals('C D E') // => []
+ * var addIntervals = gamut.asIntervals(gamut.add)
  * addIntervals('2M', '1P 5P') // => ['2M', '6M']
  */
-function intervals (src) {
+gamut.asIntervals = function (src) {
   return typeof src === 'function' ? decorate(toIntervals, parse, src) : toIntervals(parse(src))
 }
-gamut.intervals = intervals
 
 /**
  * Get the pitch classes of a gamut
@@ -174,7 +173,7 @@ gamut.pitchClass = pitchClass
  *
  * @example
  * gamut.add([1, 0, 0], [ [1, 0, 0], [2, 0, 0]]) // => [ [2, 0, 0], [3, 1, 0] ]
- * var transpose = gamut.notes(gamut.add)
+ * var transpose = gamut.asNotes(gamut.add)
  * transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]
  * var addIntervals = gamut.intevals(gamut.add)
  * addIntervals('2M', '1P 2M 3M') // => [ '2M', '3M', '4A' ]
@@ -202,7 +201,7 @@ function normalize (first, arr) {
  * @return {Array<Array>} the gamut harmonics
  *
  * @example
- * var harmonics = gamut.intervals(gamut.harmonics)
+ * var harmonics = gamut.asIntervals(gamut.harmonics)
  * harmonics('D F# A') // => ['1P', '3M', '5P']
  */
 gamut.harmonics = function (src) {

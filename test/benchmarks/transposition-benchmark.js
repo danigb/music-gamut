@@ -13,7 +13,7 @@ function generateNotes (size) {
 }
 var notes = generateNotes(20)
 
-var gamutTranspose = gamut.notes(gamut.add)
+var gamutTranspose = gamut.asNotes(gamut.add)
 var teoriaTranspose = function (interval, notes) {
   return notes.map(function (note) {
     return teoria.note(note).interval(interval).toString()
