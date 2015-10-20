@@ -1,6 +1,6 @@
 var vows = require('vows')
 var assert = require('assert')
-var gamut = require('../gamut')
+var gamut = require('../')
 
 vows.describe('grouping').addBatch({
   'uniq': {
@@ -9,20 +9,26 @@ vows.describe('grouping').addBatch({
     }
   },
   'set': {
-    'set to octave 0': function () {
-      assert.deepEqual(gamut.asNotes(gamut.set('1 2 3')), ['C0', 'D0', 'E0'])
-      assert.deepEqual(gamut.asNotes(gamut.set('8 9 10')), ['C0', 'D0', 'E0'])
-      assert.deepEqual(gamut.asNotes(gamut.set('C2 D3 E4')), ['C0', 'D0', 'E0'])
+    'get pitch classes': function () {
+      assert.deepEqual(gamut.asNotes(gamut.set('1 2 3')), ['C', 'D', 'E'])
+      assert.deepEqual(gamut.asNotes(gamut.set('8 9 10')), ['C', 'D', 'E'])
+      assert.deepEqual(gamut.asNotes(gamut.set('C2 D3 E4')), ['C', 'D', 'E'])
     },
     'remove duplicates': function () {
-      assert.deepEqual(gamut.asNotes(gamut.set('1 1 2 2 3 3')), ['C0', 'D0', 'E0'])
+      assert.deepEqual(gamut.asNotes(gamut.set('1 1 2 2 3 3')), ['C', 'D', 'E'])
     },
-    'order by frequency': function () {
-      assert.deepEqual(gamut.asNotes(gamut.set('1 3 2')), ['C0', 'D0', 'E0'])
+    'order by frequency but keep tonic': function () {
+      assert.deepEqual(gamut.asNotes(gamut.set('1 3 2')), ['C', 'D', 'E'])
+      assert.deepEqual(gamut.asNotes(gamut.set('D G F A')), ['D', 'F', 'G', 'A'])
     },
     'empty set': function () {
       assert.deepEqual(gamut.set(null), [])
     }
+  },
+  'binarySetNumber': function () {
+    assert.equal(gamut.binarySetNumber('D E F'), '101100000000')
+    assert.equal(gamut.binarySetNumber('C D E F G A B'),
+      gamut.binarySetNumber('D E F# G A B C#'))
   },
   'harmonics': {
     'interval harmonics': function () {

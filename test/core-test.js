@@ -1,6 +1,6 @@
 var vows = require('vows')
 var assert = require('assert')
-var gamut = require('../gamut')
+var gamut = require('../')
 
 vows.describe('core').addBatch({
   'gamut': {
