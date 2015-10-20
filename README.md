@@ -54,14 +54,15 @@ gamut.asIntervals(gamut('1 2 3 4 5')) // => ['1P', '2M', '3M', '4P', '5P']
 </div>
 <dl>
 <dt>
-<h4 class="name" id="add"><span class="type-signature"></span>add<span class="type-signature"></span></h4>
+<h4 class="name" id="distances"><span class="type-signature"></span>distances<span class="type-signature"></span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Add interval to a gamut</p>
-<p>Like all the functions from gamut, this works with pitch-array notation format arrays.
-Probably you will want to decorate this function with <code>gamut.notes</code> or
-<code>gamut.intervals</code> (see example)</p>
+<p>Get distances from a pitch to the notes of a gamut</p>
+<p>Like all the mutating functions from <code>music-gamut</code>, this works with
+pitch-array notation (no strings).
+Probably you will want to decorate this function with <code>gamut.asNotes</code> or
+<code>gamut.asIntervals</code> (see example)</p>
 </div>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
@@ -69,15 +70,58 @@ Probably you will want to decorate this function with <code>gamut.notes</code> o
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L163">lineno 163</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L191">lineno 191</a>
 </li>
 </ul></dd>
 </dl>
 <h5>Example</h5>
-<pre class="prettyprint"><code>gamut.add([1, 0, 0], [ [1, 0, 0], [2, 0, 0]]) // => [ [2, 0, 0], [3, 1, 0] ]
-var transpose = gamut.asNotes(gamut.add)
+<pre class="prettyprint"><code>var distances = gamut.asIntervals(gamut.distance)
+distances('C', 'C D E') // => [ '1P', '2M', '3M' ]</code></pre>
+</dd>
+<dt>
+<h4 class="name" id="pitchClasses"><span class="type-signature"></span>pitchClasses<span class="type-signature"></span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Get a new gamut with all the pitches as pitch classes</p>
+</div>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L161">lineno 161</a>
+</li>
+</ul></dd>
+</dl>
+</dd>
+<dt>
+<h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="type-signature"></span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Get a gamut tranposed by an interval.</p>
+<p>Like all the mutating functions from <code>music-gamut</code>, this works with
+pitch-array notation (no strings).
+Probably you will want to decorate this function with <code>gamut.asNotes</code> or
+<code>gamut.asIntervals</code> (see example)</p>
+</div>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L169">lineno 169</a>
+</li>
+</ul></dd>
+</dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>gamut.transpose([1, 0, 0], [ [1, 0, 0], [2, 0, 0]]) // => [ [2, 0, 0], [3, 1, 0] ]
+var transpose = gamut.asNotes(gamut.transpose)
 transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]
-var addIntervals = gamut.intevals(gamut.add)
+var addIntervals = gamut.intevals(gamut.transpose)
 addIntervals('2M', '1P 2M 3M') // => [ '2M', '3M', '4A' ]</code></pre>
 </dd>
 </dl>
@@ -87,8 +131,10 @@ addIntervals('2M', '1P 2M 3M') // => [ '2M', '3M', '4A' ]</code></pre>
 </dt>
 <dd>
 <div class="description">
-<p>Get an array from a source. The source can be a string separated by
+<p>Get an array from a source. The source can be a string with items separated by
 spaces, commas or bars (<code>|</code>), an array or an object.</p>
+<p>If the source is an array, it's returned as it. If its an object you get an
+array with the object as the only element.</p>
 <p>This function does not perform any transformation to the items of the array.
 This function <strong>always</strong> return an array, even if its empty</p>
 </div>
@@ -121,13 +167,13 @@ This function <strong>always</strong> return an array, even if its empty</p>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L40">lineno 40</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L131">lineno 131</a>
 </li>
 </ul></dd>
 </dl>
 <h5>Returns:</h5>
 <div class="param-desc">
-<p>the source converted to an array</p>
+<p>the source converted to an array (never null)</p>
 </div>
 <dl>
 <dt>
@@ -150,7 +196,7 @@ gamut.asArray(null) // => [ ]</code></pre>
 </dt>
 <dd>
 <div class="description">
-<p>Get the gamut as intervals or decorate a function to return intervals</p>
+<p>Get the gamut as an array of interval names or decorate a function to return intervals</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -179,7 +225,7 @@ gamut.asArray(null) // => [ ]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L135">lineno 135</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L115">lineno 115</a>
 </li>
 </ul></dd>
 </dl>
@@ -208,7 +254,7 @@ addIntervals('2M', '1P 5P') // => ['2M', '6M']</code></pre>
 </dt>
 <dd>
 <div class="description">
-<p>Get notes from a gamut, or decorate a function to return notes</p>
+<p>Get gamut as an array of note names, or decorate a function to return notes</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -237,7 +283,7 @@ addIntervals('2M', '1P 5P') // => ['2M', '6M']</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L117">lineno 117</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L99">lineno 99</a>
 </li>
 </ul></dd>
 </dl>
@@ -262,11 +308,12 @@ var transpose = gamut.asNotes(gamut.add)
 transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]</code></pre>
 </dd>
 <dt>
-<h4 class="name" id="fn"><span class="type-signature"></span>fn<span class="signature">(operation)</span><span class="type-signature"> &rarr; {function}</span></h4>
+<h4 class="name" id="gamut"><span class="type-signature"></span>gamut<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Compose functions</p>
+<p>Create a gamut: an array of note names (pitches) or intervals in
+<a href="https://github.com/danigb/pitch-array">pitch-array</a> format</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -279,11 +326,13 @@ transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>operation</code></td>
+<td class="name"><code>source</code></td>
 <td class="type">
-<span class="param-type">Array.&lt;function()></span>
+<span class="param-type">String</span>
+|
+<span class="param-type">Array</span>
 </td>
-<td class="description last"><p>an array of functions to compoase</p></td>
+<td class="description last"><p>the gamut</p></td>
 </tr>
 </tbody>
 </table>
@@ -293,22 +342,25 @@ transpose('2M', 'C D E') // => [ 'D', 'E', 'F#' ]</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L20">lineno 20</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L14">lineno 14</a>
 </li>
 </ul></dd>
 </dl>
 <h5>Returns:</h5>
 <div class="param-desc">
-<p>the composed function</p>
+<p>the gamut with notes or intervals in pitch-array notation format</p>
 </div>
 <dl>
 <dt>
 Type
 </dt>
 <dd>
-<span class="param-type">function</span>
+<span class="param-type">Array</span>
 </dd>
 </dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>gamut('C D E') // => [ [0, 0, null], [1, 0, null], [2, 0, null] ]
+gamut('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]</code></pre>
 </dd>
 <dt>
 <h4 class="name" id="gamut"><span class="type-signature"></span>gamut<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
@@ -364,6 +416,60 @@ Type
 </dl>
 </dd>
 <dt>
+<h4 class="name" id="harmonics"><span class="type-signature"></span>harmonics<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;Array>}</span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Get the harmonics (the intervals of the notes relative to the first one)</p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>source</code></td>
+<td class="type">
+<span class="param-type">String</span>
+|
+<span class="param-type">Array.&lt;Array></span>
+</td>
+<td class="description last"><p>the gamut</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js">transform.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js#L77">lineno 77</a>
+</li>
+</ul></dd>
+</dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>the gamut harmonics</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">Array.&lt;Array></span>
+</dd>
+</dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>var harmonics = gamut.asIntervals(gamut.harmonics)
+harmonics('D F# A') // => ['1P', '3M', '5P']</code></pre>
+</dd>
+<dt>
 <h4 class="name" id="harmonics"><span class="type-signature"></span>harmonics<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 </dt>
 <dd>
@@ -417,66 +523,13 @@ Type
 <pre class="prettyprint"><code>gamut.interval.harmonics('C E G') // => ['1P', '3M', '5P']</code></pre>
 </dd>
 <dt>
-<h4 class="name" id="harmonics"><span class="type-signature"></span>harmonics<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;Array>}</span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Get the harmonics (the intervals of the notes relative to the first one)</p>
-</div>
-<h5>Parameters:</h5>
-<table class="params">
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th class="last">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="name"><code>source</code></td>
-<td class="type">
-<span class="param-type">String</span>
-|
-<span class="param-type">Array.&lt;Array></span>
-</td>
-<td class="description last"><p>the gamut</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L196">lineno 196</a>
-</li>
-</ul></dd>
-</dl>
-<h5>Returns:</h5>
-<div class="param-desc">
-<p>the gamut harmonics</p>
-</div>
-<dl>
-<dt>
-Type
-</dt>
-<dd>
-<span class="param-type">Array.&lt;Array></span>
-</dd>
-</dl>
-<h5>Example</h5>
-<pre class="prettyprint"><code>var harmonics = gamut.asIntervals(gamut.harmonics)
-harmonics('D F# A') // => ['1P', '3M', '5P']</code></pre>
-</dd>
-<dt>
 <h4 class="name" id="map"><span class="type-signature"></span>map<span class="signature">(fn, source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Get a gamut mapped to a function</p>
-<p>Is important to notice that the function will receive pitches in pitch-array notation format.</p>
+<p>Get a gamut mapped by a function</p>
+<p>Is important to notice that the callback function will receive pitches
+always in pitch-array notation format.</p>
 <p>This function can be partially applied (Function -&gt; Array -&gt; Array)</p>
 </div>
 <h5>Parameters:</h5>
@@ -513,7 +566,7 @@ harmonics('D F# A') // => ['1P', '3M', '5P']</code></pre>
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L67">lineno 67</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L33">lineno 33</a>
 </li>
 </ul></dd>
 </dl>
@@ -534,78 +587,6 @@ Type
 gamut.map(addOctave, [ [0, 0, 0], [1, 0, 0] ]) // => [ [0, 0, 1], [1, 0, 1]]
 var octaveUp = gamut.map(addOctave)
 octaveUp([ [0, 0, 0], [1, 0, 0] ]) // => [ [0, 0, 1], [1, 0, 1]]</code></pre>
-</dd>
-<dt>
-<h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Convert a list of notes or intervals to pitch-array notation format</p>
-</div>
-<h5>Parameters:</h5>
-<table class="params">
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th class="last">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="name"><code>source</code></td>
-<td class="type">
-<span class="param-type">String</span>
-|
-<span class="param-type">Array</span>
-</td>
-<td class="description last"><p>the gamut</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L92">lineno 92</a>
-</li>
-</ul></dd>
-</dl>
-<h5>Returns:</h5>
-<div class="param-desc">
-<p>the gamut with notes or intervals in pitch-array notation format</p>
-</div>
-<dl>
-<dt>
-Type
-</dt>
-<dd>
-<span class="param-type">Array</span>
-</dd>
-</dl>
-<h5>Example</h5>
-<pre class="prettyprint"><code>gamut.parse('C D E') // => [ [0, 0, null], [1, 0, null], [2, 0, null] ]
-gamut.parse('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]</code></pre>
-</dd>
-<dt>
-<h4 class="name" id="pitchClass"><span class="type-signature"></span>pitchClass<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Get the pitch classes of a gamut</p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L157">lineno 157</a>
-</li>
-</ul></dd>
-</dl>
 </dd>
 <dt>
 <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;Array>}</span></h4>
@@ -639,15 +620,67 @@ gamut.parse('1P 3M 5P') // => [ [0, 0, 0], [2, 0, 0], [4, 0, 0] ]</code></pre>
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js">transform.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L231">lineno 231</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js#L40">lineno 40</a>
 </li>
 </ul></dd>
 </dl>
 <h5>Returns:</h5>
 <div class="param-desc">
 <p>the pitch set</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">Array.&lt;Array></span>
+</dd>
+</dl>
+</dd>
+<dt>
+<h4 class="name" id="sort"><span class="type-signature"></span>sort<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;Array>}</span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Sort a gamut by pitch height (frequency)</p>
+<p>Notice that this functions <strong>doesn't</strong> mutate the original gamut.</p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>source</code></td>
+<td class="type">
+<span class="param-type">String</span>
+|
+<span class="param-type">Array.&lt;Array></span>
+</td>
+<td class="description last"><p>the gamut</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js">transform.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js#L6">lineno 6</a>
+</li>
+</ul></dd>
+</dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>the sorted gamut</p>
 </div>
 <dl>
 <dt>
@@ -710,58 +743,6 @@ Type
 </dl>
 <h5>Example</h5>
 <pre class="prettyprint"><code>gamut.notes.sort('B A G') // => ['G', 'A', 'B']</code></pre>
-</dd>
-<dt>
-<h4 class="name" id="sort"><span class="type-signature"></span>sort<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;Array>}</span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>Sort a gamut by pitch height (frequency)</p>
-<p>Notice that this functions <strong>doesn't</strong> mutate the original gamut.</p>
-</div>
-<h5>Parameters:</h5>
-<table class="params">
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th class="last">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="name"><code>source</code></td>
-<td class="type">
-<span class="param-type">String</span>
-|
-<span class="param-type">Array.&lt;Array></span>
-</td>
-<td class="description last"><p>the gamut</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
-<span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L246">lineno 246</a>
-</li>
-</ul></dd>
-</dl>
-<h5>Returns:</h5>
-<div class="param-desc">
-<p>the sorted gamut</p>
-</div>
-<dl>
-<dt>
-Type
-</dt>
-<dd>
-<span class="param-type">Array.&lt;Array></span>
-</dd>
-</dl>
 </dd>
 <dt>
 <h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">(tonic, source)</span><span class="type-signature"> &rarr; {Array}</span></h4>
@@ -856,9 +837,9 @@ gamut.notes.transpose('M2', 'C D E') // => ['D', 'E', 'F#']</code></pre>
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js">transform.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L213">lineno 213</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/transform.js#L20">lineno 20</a>
 </li>
 </ul></dd>
 </dl>

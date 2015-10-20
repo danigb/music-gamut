@@ -1,6 +1,6 @@
 CHANGELOG
 
-[next]
+[0.3.0]
 - binarySetNumber and fromBinary functions
 - gamut.set now returns properly ordered notes
 - add gamut.distances
@@ -16,12 +16,17 @@ CHANGELOG
 
 BENCHMARKS
 
-[0.2.0]
-gamut transposition x 59,455 ops/sec ±0.78% (98 runs sampled)
-teoria transposition x 41,513 ops/sec ±0.62% (95 runs sampled)
+[0.3.0]
+set: 56,141
+transposition: 53,488 / 38,551
 
-[0.1.0] 38,339 / 42,314
+[0.2.0]
+transposition: 59,455 / 41,513
+
+[0.1.0]
+transposition: 38,339 / 42,314
 
 SIZES
+[0.3.0] 21573 / 6690
 [0.2.0] 21113 / 7356
 [0.1.0] 11434 / 5301
