@@ -23,10 +23,10 @@ vows.describe('gamut').addBatch({
     assert.deepEqual(gamut.parse('C4 2m'), [ [ 0, 0, 4 ], [ 1, -1, 0 ] ])
   },
   'asNotes': function () {
-    assert.deepEqual(gamut.asNotes([ [0, 0, 0], [1, 0, 0] ]), [ 'C0', 'D0' ])
+    assert.deepEqual(gamut.notes([ [0, 0, 0], [1, 0, 0] ]), [ 'C0', 'D0' ])
   },
   'gamut asIntervals': function () {
-    assert.deepEqual(gamut.asIntervals([ [0, 0, 0], [1, 0, 0] ]), [ '1P', '2M' ])
+    assert.deepEqual(gamut.intervals([ [0, 0, 0], [1, 0, 0] ]), [ '1P', '2M' ])
   },
   'pitchClasses': function () {
     assert.equal(gamut.pitchClasses('C3 C4 D7 B3').join(' '), 'C C D B')

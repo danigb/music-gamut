@@ -54,41 +54,48 @@ gamut.parse = function (source) {
 }
 
 /**
- * Convert from pitch-array notation to a note name (pitch) string. Suitable
- * for single elements or arrays of pitches
+ * Get the note names of the gamut. Everything is not a note will be null.
  *
- * @name asNotes
+ * @name notes
  * @function
- * @param {Array|Array<Array>} source - the item or items to stringify
- * @return {Array<String>} the note names
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the gamut note names
+ *
+ * @example
+ * gamut.notes('C blah D') // => ['C', null, 'D']
  */
-gamut.asNotes = function (source) {
+gamut.notes = function (source) {
   return gamut(source).map(function (p) {
-    return typeof p === 'string' ? p : asPitch(p)
+    return asPitch(Array.isArray(p) ? p : parse(p))
   })
 }
 
 /**
- * Convert from pitch-array notation to a interval string. Suitable
- * for single elements or arrays of intervals
+ * Get the intervals of the gamut. Everything is not an interval will be null.
  *
- * @name asIntervals
+ * @name intervals
  * @function
- * @param {Array|Array<Array>} source - the item or items to stringify
- * @return {Array<String>} the intervals names
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the gamut intervals
+ *
+ * @example
+ * gamut.intervals('1 C#4 3m') // => ['1P', null, '3m']
  */
-gamut.asIntervals = function (source) {
+gamut.intervals = function (source) {
   return gamut(source).map(function (p) {
-    return typeof p === 'string' ? p : asInterval(p)
+    return asInterval(Array.isArray(p) ? p : parse(p))
   })
 }
 
 /**
+ * Remove the octaves from the notes
+ *
  * @name pitchClasses
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
  */
 gamut.pitchClasses = function (source) {
-  return gamut.asNotes(op.pitchClasses(gamut.parse(source)))
+  return gamut.notes(op.pitchClasses(gamut.parse(source)))
 }
 
 /**
@@ -96,7 +103,7 @@ gamut.pitchClasses = function (source) {
  * @function
  */
 gamut.simplify = function (source) {
-  return gamut.asIntervals(op.simplify(gamut.parse(source)))
+  return gamut.intervals(op.simplify(gamut.parse(source)))
 }
 
 /**
@@ -113,7 +120,7 @@ gamut.heights = function (source) {
  */
 gamut.transpose = function (tonic, source) {
   var t = parse(tonic)
-  return gamut.asNotes(op.transpose(t, gamut.parse(source)))
+  return gamut.notes(op.transpose(t, gamut.parse(source)))
 }
 
 /**
@@ -123,7 +130,7 @@ gamut.transpose = function (tonic, source) {
 gamut.distances = function (tonic, source) {
   var t = parse(tonic)
   if (tonic && !t) return []
-  return gamut.asIntervals(op.distances(t, gamut.parse(source)))
+  return gamut.intervals(op.distances(t, gamut.parse(source)))
 }
 
 /**
@@ -131,7 +138,7 @@ gamut.distances = function (tonic, source) {
  * @function
  */
 gamut.uniq = function (source) {
-  return gamut.asNotes(op.uniq(gamut.parse(source)))
+  return gamut.notes(op.uniq(gamut.parse(source)))
 }
 
 /**
@@ -139,7 +146,7 @@ gamut.uniq = function (source) {
  * @function
  */
 gamut.intervalSet = function (source) {
-  return gamut.asIntervals(op.intervalSet(gamut.parse(source)))
+  return gamut.intervals(op.intervalSet(gamut.parse(source)))
 }
 
 /**
@@ -147,7 +154,7 @@ gamut.intervalSet = function (source) {
  * @function
  */
 gamut.pitchSet = function (source) {
-  return gamut.asNotes(op.pitchSet(gamut.parse(source)))
+  return gamut.notes(op.pitchSet(gamut.parse(source)))
 }
 
 /**
@@ -163,7 +170,7 @@ gamut.binarySet = function (source) {
  * @function
  */
 gamut.fromBinarySet = function (source, tonic) {
-  return gamut.asNotes(op.transpose(parse(tonic), op.fromBinarySet(source)))
+  return gamut.notes(op.transpose(parse(tonic), op.fromBinarySet(source)))
 }
 
 module.exports = gamut
