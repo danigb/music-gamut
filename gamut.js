@@ -80,19 +80,18 @@ var toIntervals = g_.map(function (i) { return typeof i === 'string' ? i : asInt
  * It makes an important asumption about the function to be decorated: only the
  * last argument should be parserd (because its a gamut)
  */
-function typeDecorator (builder, parser, fn) {
+function typeDecorator (builder, fn) {
   return function () {
     var len = arguments.length
     if (len === 0) return []
     var args = Array.prototype.slice.call(arguments)
-    args[len - 1] = parser(args[len - 1])
     return builder(fn.apply(null, args))
   }
 }
 
 gamut.asType = function (builder, parser) {
   return function (src) {
-    return isFn(src) ? typeDecorator(builder, parser, src) : builder(parser(src))
+    return isFn(src) ? typeDecorator(builder, src) : builder(parser(src))
   }
 }
 function isFn (fn) { return typeof fn === 'function' }
@@ -210,9 +209,10 @@ gamut.distances = operation(op.subtract)
 
 function operation (fn) {
   return function (pitch, source) {
+    var src = gamut(source)
     var i = parsePitch(pitch)
-    if (!i) return gamut(source)
-    return source.map(function (pitch) {
+    if (!i) return src
+    return src.map(function (pitch) {
       return pitch ? fn(i, pitch) : null
     })
   }

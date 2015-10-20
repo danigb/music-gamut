@@ -25,10 +25,19 @@ vows.describe('grouping').addBatch({
       assert.deepEqual(gamut.set(null), [])
     }
   },
-  'binarySetNumber': function () {
-    assert.equal(gamut.binarySetNumber('D E F'), '101100000000')
-    assert.equal(gamut.binarySetNumber('C D E F G A B'),
+  'binary sets': {
+    'get number': function () {
+      assert.equal(gamut.binarySetNumber('D E F'), '101100000000')
+      assert.equal(gamut.binarySetNumber('C D E F G A B'), '101011010101')
+      assert.equal(gamut.binarySetNumber('C D E F G A B'),
       gamut.binarySetNumber('D E F# G A B C#'))
+    },
+    'from number': function () {
+      var set = gamut.asNotes(gamut.fromBinary)
+      assert.equal(set('101011010101').join(' '), 'C D E F G A B')
+      assert.deepEqual(set('101'), [])
+      assert.equal(set(2773).join(' '), 'C D E F G A B')
+    }
   },
   'harmonics': {
     'interval harmonics': function () {

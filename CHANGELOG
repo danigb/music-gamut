@@ -1,7 +1,7 @@
 CHANGELOG
 
 [next]
-- gamut.binarySetNumber
+- binarySetNumber and fromBinary functions
 - gamut.set now returns properly ordered notes
 - add gamut.distances
 - rename gamut.add to gamut.transpose

@@ -61,6 +61,19 @@ module.exports = function (gamut) {
     return number.join('')
   }
 
+  var notes = gamut('C Db D Eb E F F# G Ab A Bb B')
+  gamut.fromBinary = function (number) {
+    if (/^1[01]{11}$/.test(number)) number = parseInt(number, 2)
+    else if (typeof number !== 'number') return []
+
+    var binary = ((number % 2048) + 2048).toString(2)
+    var set = []
+    for (var i = 0; i < 12; i++) {
+      if (binary.charAt(i) === '1') set.push(notes[i])
+    }
+    return set
+  }
+
   /**
    * Get the harmonics (the intervals of the notes relative to the first one)
    *
