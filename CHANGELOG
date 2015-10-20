@@ -1,7 +1,7 @@
 CHANGELOG
 
 [0.4.0]
-- Add simplify function
+- Rewrite. API stabilize.
 
 [0.3.0]
 - binarySetNumber and fromBinary functions
@@ -19,6 +19,10 @@ CHANGELOG
 
 BENCHMARKS
 
+[0.4.0]
+set: 65,223
+transposition: 64,904 / 42,822
+
 [0.3.0]
 set: 56,141
 transposition: 53,488 / 38,551
@@ -30,6 +34,7 @@ transposition: 59,455 / 41,513
 transposition: 38,339 / 42,314
 
 SIZES
+[0.4.0] 21250 / 8334
 [0.3.0] 21573 / 6690
 [0.2.0] 21113 / 7356
 [0.1.0] 11434 / 5301

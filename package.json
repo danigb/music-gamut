@@ -1,8 +1,8 @@
 {
   "name": "music-gamut",
-  "version": "0.4.0-pre",
+  "version": "0.4.0-pre2",
   "description": "Manipulate notes made easy",
-  "main": "index.js",
+  "main": "gamut.js",
   "scripts": {
     "test": "vows --spec test/*.js",
     "docs": "docme API.md",

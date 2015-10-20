@@ -3,10 +3,10 @@
 var Benchmark = require('benchmark')
 var gamut = require('../../')
 
-console.log('Simple set benchmark: ', gamut.asNotes(gamut.set('C2 C7 D2 E5 G6 G7 A2 A#4 Bb5')))
+console.log('Simple set benchmark: ', gamut.pitchSet('d4 C2 C7 D2 E5 G6 G7 A2 A#4 Bb5'))
 var suite = new Benchmark.Suite()
 suite.add('gamut simple set', function () {
-  gamut.set('C2 C7 D2 E5 G6 G7 A2 A#4 Bb5')
+  gamut.pitchSet('d4 C2 C7 D2 E5 G6 G7 A2 A#4 Bb5')
 })
 .on('cycle', function (event) {
   console.log(String(event.target))
