@@ -62,6 +62,7 @@ vows.describe('gamut').addBatch({
     assert.equal(gamut.binarySet('C D E'), '101010000000')
   },
   'fromBinarySet': function () {
+    assert.equal(gamut.fromBinarySet(2773).join(' '), 'C D E F G A B')
     assert.equal(gamut.fromBinarySet(2773, 'Bb2').join(' '), 'Bb C D Eb F G A')
     assert.equal(gamut.fromBinarySet('100100000000', 'D').join(' '), 'D F')
     assert.deepEqual(gamut.fromBinarySet('NaN', 'Bb2'), [])

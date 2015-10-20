@@ -12,7 +12,6 @@
 ```js
 gamut.pitchSet('C2 D3 C4 E5') // => ['C', 'D', 'E']
 gamut.transpose('2M', 'C D E F G') // => ['D', 'E', 'F#', 'G', 'A']
-gamut.addIntervals('2M', '1P 2M 3M') // => ['2M', '3M', '4A']
 gamut.distances('C2', 'C3 C4') // => ['8P', '15P']
 ```
 

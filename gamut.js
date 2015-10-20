@@ -23,12 +23,12 @@ var SEP = /\s*\|\s*|\s*,\s*|\s+/
  * @return {Array} the source converted to an array (never null)
  *
  * @example
- * gamut.asArray('c d e') // => [ 'c', 'd', 'e' ]
- * gamut.asArray('CMaj7 | Dm7 G7') // => [ 'CMaj7', 'Dm7', 'G7' ]
- * gamut.asArray('1, 2, 3') // => ['1', '2', '3']
- * gamut.asArray([1, 'a', 3]) // => [1, 'a', 3]
- * gamut.asArray(object) // => [ object ]
- * gamut.asArray(null) // => [ ]
+ * gamut('c d e') // => [ 'c', 'd', 'e' ]
+ * gamut('CMaj7 | Dm7 G7') // => [ 'CMaj7', 'Dm7', 'G7' ]
+ * gamut('1, 2, 3') // => ['1', '2', '3']
+ * gamut([1, 'a', 3]) // => [1, 'a', 3]
+ * gamut(object) // => [ object ]
+ * gamut(null) // => [ ]
  */
 function gamut (source) {
   if (Array.isArray(source)) return source
@@ -93,39 +93,60 @@ gamut.intervals = function (source) {
  * @name pitchClasses
  * @function
  * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the pitch classes
  */
 gamut.pitchClasses = function (source) {
   return gamut.notes(op.pitchClasses(gamut.parse(source)))
 }
 
 /**
+ * Convert all compound intervals to simple intervals
+ *
  * @name simplify
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the simplified intervals
  */
 gamut.simplify = function (source) {
   return gamut.intervals(op.simplify(gamut.parse(source)))
 }
 
 /**
+ * Get the heights of the notes or intervals. The height of a note is the
+ * distance in semitones from `'C2'` to the note. Applied to intervals,
+ * is the number of semitones
+ *
  * @name heights
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<Integer>} the heights
  */
 gamut.heights = function (source) {
   return op.heights(gamut.parse(source))
 }
 
 /**
+ * Transpose a list of notes by an interval
+ *
  * @name transpose
  * @function
+ * @param {String|Array} interval - the interval to transpose
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<Integer>} the transposed notes
  */
-gamut.transpose = function (tonic, source) {
-  var t = parse(tonic)
-  return gamut.notes(op.transpose(t, gamut.parse(source)))
+gamut.transpose = function (interval, source) {
+  var i = parse(interval)
+  return gamut.notes(op.transpose(i, gamut.parse(source)))
 }
 
 /**
+ * Get the distances (in intervals) of the notes from a tonic
+ *
  * @name distances
  * @function
+ * @param {String|Array} tonic - the note to calculate the interval from
+ * @param {String|Array|Array<Array>} source - the notes
+ * @return {Array<String>} the intervals
  */
 gamut.distances = function (tonic, source) {
   var t = parse(tonic)
@@ -134,42 +155,64 @@ gamut.distances = function (tonic, source) {
 }
 
 /**
+ * Remove duplicates __and__ nulls
+ *
  * @name uniq
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the notes or intervals
  */
 gamut.uniq = function (source) {
   return gamut.notes(op.uniq(gamut.parse(source)))
 }
 
 /**
+ * Get the interval set of the gamut
+ *
  * @name intervalSet
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the intervals
  */
 gamut.intervalSet = function (source) {
   return gamut.intervals(op.intervalSet(gamut.parse(source)))
 }
 
 /**
+ * Get the pitch set of the gamut
+ *
  * @name pitchSet
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the pitch classes (note names without octaves)
  */
 gamut.pitchSet = function (source) {
   return gamut.notes(op.pitchSet(gamut.parse(source)))
 }
 
 /**
+ * Get the gamut pitch set as binary number representation
+ *
  * @name binarySet
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {String} the binary number
  */
 gamut.binarySet = function (source) {
   return op.binarySet(gamut.parse(source))
 }
 
 /**
+ * Get a pitch set from a binary set number and a tonic
+ *
  * @name fromBinarySet
  * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @param {String} tonic - (Optional) the first note of the set ('C' by default)
+ * @return {Array<String>} the set pitch classes (note names without octaves)
  */
 gamut.fromBinarySet = function (source, tonic) {
+  tonic = tonic || [0, 0, 0]
   return gamut.notes(op.transpose(parse(tonic), op.fromBinarySet(source)))
 }
 
