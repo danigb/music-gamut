@@ -101,8 +101,8 @@ function isFn (fn) { return typeof fn === 'function' }
  *
  * @name asNotes
  * @function
- * @param {Array<Array>|Function} source
- * @return {Array<String>|Function} an array of strings with note names or a function
+ * @param {Array<Array> | Function} source
+ * @return {Array<String> | Function} an array of strings with note names or a function
  * decorated to return an array of pitch strings
  *
  * @example
@@ -162,7 +162,13 @@ gamut.asArray = function (source) {
  * Get a new gamut with all the pitches as pitch classes
  *
  * @name pitchClasses
- * @functions
+ * @function
+ * @param {String|Array} source - the gamut
+ * @return {Array<Array>} the pitch class gamut
+ *
+ * @example
+ * var pc = gamut.asNotes(gamut.pitchClasses)
+ * pc('C2 D4 G5 C7') // => ['C', 'D', 'G', 'C']
  */
 gamut.pitchClasses = g_.map(op.pitchClass)
 
@@ -175,6 +181,7 @@ gamut.pitchClasses = g_.map(op.pitchClass)
  * `gamut.asIntervals` (see example)
  *
  * @name transpose
+ * @function
  * @param {String} interval - the interval to transpose
  * @param {String|Array} source - the gamut
  * @return {Array} the gamut transposed an interval
@@ -197,6 +204,7 @@ gamut.transpose = operation(op.add)
  * `gamut.asIntervals` (see example)
  *
  * @name distances
+ * @function
  * @param {String} pitch - the root pitch
  * @param {String|Array<String|Array>} source - the gamut
  * @return {Array<Array>} the intervals from the root to each note of the gamut

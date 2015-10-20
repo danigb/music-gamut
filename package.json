@@ -1,15 +1,16 @@
 {
   "name": "music-gamut",
-  "version": "0.3.0",
+  "version": "0.4.0-pre",
   "description": "Manipulate notes made easy",
   "main": "index.js",
   "scripts": {
     "test": "vows --spec test/*.js",
-    "docs": "docme README.md",
+    "docs": "docme API.md",
     "dist": "browserify gamut.js > dist/gamut.js && browserify gamut.js | uglifyjs > dist/gamut.min.mjs && ls -all dist/*",
-    "cover": "istanbul cover vows test/*.js && open ./coverage/lcov-report/index.html",
+    "coverage": "istanbul cover vows test/*.js",
+    "cover": "npm run coverage && open ./coverage/lcov-report/index.html",
     "benchmarks": "node test/benchmarks/*.js",
-    "climate": "CODECLIMATE_REPO_TOKEN=fcfefb53aa586b904e50df4da52d6dc294182107e236117758c3a048b17491ce codeclimate-test-reporter < coverage/lcov.info"
+    "climate": "npm run coverage && CODECLIMATE_REPO_TOKEN=fcfefb53aa586b904e50df4da52d6dc294182107e236117758c3a048b17491ce codeclimate-test-reporter < coverage/lcov.info"
   },
   "repository": {
     "type": "git",

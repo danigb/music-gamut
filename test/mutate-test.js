@@ -13,6 +13,10 @@ vows.describe('mutate').addBatch({
       assert.deepEqual(distances('C', 'C D E F#'), [ '1P', '2M', '3M', '4A' ])
     }
   },
+  'simplify': function () {
+    var simplify = gamut.asIntervals(gamut.simplify)
+    assert.deepEqual(simplify('2m 3m 8P 9M 10M 4A'), ['2m', '3m', '8P', '9M', '10M', '4A'])
+  },
   'normalize': function () {
     var normalize = gamut.asIntervals(gamut.normalize)
     assert.deepEqual(normalize('C D E'), [ '1P', '2M', '3M' ])

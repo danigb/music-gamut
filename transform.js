@@ -75,6 +75,17 @@ module.exports = function (gamut) {
   }
 
   /**
+   * Simplify all the intervals of the gamut
+   *
+   * @name simplify
+   * @function
+   *
+   */
+  gamut.simplify = function (source) {
+    return gamut(source).map(op.setDefaultOctave(0))
+  }
+
+  /**
    * Get the harmonics (the intervals of the notes relative to the first one)
    *
    * @name harmonics
@@ -87,7 +98,6 @@ module.exports = function (gamut) {
    * harmonics('D F# A') // => ['1P', '3M', '5P']
    */
   gamut.harmonics = function (source) {
-    var src = gamut(source).map(op.setDefaultOctave(0))
-    return gamut.distances(src[0], src)
+    return gamut.normalize(gamut.simplify(source))
   }
 }
