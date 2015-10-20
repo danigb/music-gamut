@@ -9,12 +9,19 @@ vows.describe('core').addBatch({
   'asArray': function () {
     assert.deepEqual(gamut.asArray('C D E, F,   G |     A  , B'), ['C', 'D', 'E', 'F', 'G', 'A', 'B'])
     assert.deepEqual(gamut.asArray(['A', 1]), ['A', 1])
+    assert.deepEqual(gamut.asArray({}), [{}])
     assert.deepEqual(gamut.asArray(null), [ ])
     assert.deepEqual(gamut.asArray(), [ ])
   },
-  'asNotes': function () {
-    var transpose = gamut.asNotes(gamut.transpose)
-    assert.deepEqual(transpose('2M', 'C D E'), [ 'D', 'E', 'F#' ])
+  'asNotes': {
+    'decorate function': function () {
+      var transpose = gamut.asNotes(gamut.transpose)
+      assert.deepEqual(transpose('2M', 'C D E'), [ 'D', 'E', 'F#' ])
+    },
+    'edge cases': function () {
+      assert.deepEqual(gamut.asNotes(), [])
+      assert.deepEqual(gamut.asNotes(null), [])
+    }
   },
   'asIntervals': {
     'decorate function': function () {
