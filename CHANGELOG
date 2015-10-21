@@ -1,6 +1,8 @@
 CHANGELOG
 
 [0.5.0]
+- distance functions now converts all pitch classes to octave 0 by default
+- Add sort function
 - You can create a binarySet without specifying the tonic (C by default)
 - Rename asNotes and asIntervals to notes and intervals
 

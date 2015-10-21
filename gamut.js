@@ -142,11 +142,20 @@ gamut.transpose = function (interval, source) {
 /**
  * Get the distances (in intervals) of the notes from a tonic
  *
+ * __Important__: al pitch classes are converted to octave 0 before calculating
+ * the distances.
+ *
  * @name distances
  * @function
  * @param {String|Array} tonic - the note to calculate the interval from
  * @param {String|Array|Array<Array>} source - the notes
  * @return {Array<String>} the intervals
+ *
+ * @example
+ * gamut.distance('D2', 'D2 E2 F2') // => ['1P', '2M', '3m']
+ * // pitch classes are octave 0
+ * gamut.distance('C', 'C2') // => ['15P']
+ * gamut.distance('C2', 'C') // => ['-15P']
  */
 gamut.distances = function (tonic, source) {
   var t = parse(tonic)
@@ -164,6 +173,29 @@ gamut.distances = function (tonic, source) {
  */
 gamut.uniq = function (source) {
   return gamut.notes(op.uniq(gamut.parse(source)))
+}
+
+/**
+ * Sort notes in ascending frequency (pitch) order
+ *
+ * @name sortByFreq
+ * @function
+ * @param {String|Array|Array<Array>} source - the gamut
+ * @return {Array<String>} the sorted notes or intervals
+ *
+ * @example
+ * gamut.sortByFreq('D E F G C') // => ['C', 'D', E', F', 'G']
+ */
+gamut.sortByFreq = function (source) {
+  return gamut.notes(op.sort(gamut.parse(source)))
+}
+
+/**
+ * Sort intervals by size
+ *
+ */
+gamut.sortBySize = function (source) {
+  return gamut.intervals(op.sort(gamut.parse(source)))
 }
 
 /**

@@ -26,8 +26,9 @@ function distances (tonic, gamut) {
     if (!gamut[0]) return []
     tonic = gamut[0]
   }
+  tonic = op.setDefaultOctave(0, tonic)
   return gamut.map(function (p) {
-    return p ? op.subtract(tonic, p) : null
+    return p ? op.subtract(tonic, op.setDefaultOctave(0, p)) : null
   })
 }
 
@@ -91,6 +92,7 @@ module.exports = {
   transpose: transpose,
   distances: distances,
   uniq: uniq,
+  sort: sort,
   intervalSet: intervalSet,
   pitchSet: pitchSet,
   binarySet: binarySet,

@@ -43,6 +43,8 @@ vows.describe('gamut').addBatch({
   },
   'distances': function () {
     assert.equal(gamut.distances('D2', 'D3 E3 F4').join(' '), '8P 9M 17m')
+    assert.deepEqual(gamut.distances('C1', 'C D E'), [ '-8P', '-7m', '-6m' ])
+    assert.deepEqual(gamut.distances('C', 'C1 D2 E3'), [ '8P', '16M', '24M' ])
     assert.deepEqual(gamut.distances(null, 'D E F'), ['1P', '2M', '3m'])
     assert.deepEqual(gamut.distances('blah', 'C D E'), [])
     assert.deepEqual(gamut.distances('blah', 'blah blah'), [])
@@ -50,6 +52,12 @@ vows.describe('gamut').addBatch({
   'uniq': function () {
     assert.equal(gamut.uniq('C2 D3 E4 E3 D3 C2 B').join(' '), 'C2 D3 E4 E3 B')
     assert.deepEqual(gamut.uniq('C blah blah D'), ['C', 'D'])
+  },
+  'sortByFreq': function () {
+    assert.equal(gamut.sortByFreq('D E G C B A').join(' '), 'C D E G A B')
+  },
+  'sortBySize': function () {
+    assert.deepEqual(gamut.sortBySize('2m -3m 1P 3M -2M'), ['-3m', '-2M', '1P', '2m', '3M'])
   },
   'intervalSet': function () {
     assert.equal(gamut.intervalSet('D2 F#3 E3').join(' '), '1P 2M 3M')
