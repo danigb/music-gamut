@@ -22,11 +22,13 @@ vows.describe('gamut').addBatch({
     assert.deepEqual(gamut.parse('C blah D'), [ [ 0, 0, null ], null, [ 1, 0, null ] ])
     assert.deepEqual(gamut.parse('C4 2m'), [ [ 0, 0, 4 ], [ 1, -1, 0 ] ])
   },
-  'asNotes': function () {
+  'notes': function () {
     assert.deepEqual(gamut.notes([ [0, 0, 0], [1, 0, 0] ]), [ 'C0', 'D0' ])
+    assert.deepEqual(gamut.notes('c2 bbb3 e g'), [ 'C2', 'Bbb3', 'E', 'G' ])
   },
-  'gamut asIntervals': function () {
+  'intervals': function () {
     assert.deepEqual(gamut.intervals([ [0, 0, 0], [1, 0, 0] ]), [ '1P', '2M' ])
+    assert.deepEqual(gamut.intervals('1 2 3 4 5'), [ '1P', '2M', '3M', '4P', '5P' ])
   },
   'pitchClasses': function () {
     assert.equal(gamut.pitchClasses('C3 C4 D7 B3').join(' '), 'C C D B')
@@ -39,6 +41,9 @@ vows.describe('gamut').addBatch({
     assert.deepEqual(gamut.transpose('8P', 'C1 blah E2'), ['C2', null, 'E3'])
     assert.deepEqual(gamut.transpose('blah', 'C D E'), [])
   },
+  'add': function () {
+    assert.deepEqual(gamut.add('2M', '1 2 3 4 5'), [ '2M', '3M', '4A', '5P', '6M' ])
+  },
   'heights': function () {
     assert.deepEqual(gamut.heights('1P 2M 3M 4P'), [ 0, 2, 4, 5 ])
   },
@@ -48,7 +53,8 @@ vows.describe('gamut').addBatch({
     assert.deepEqual(gamut.distances('C', 'C1 D2 E3'), [ '8P', '16M', '24M' ])
     assert.deepEqual(gamut.distances(null, 'D E F'), ['1P', '2M', '3m'])
     assert.deepEqual(gamut.distances('blah', 'C D E'), [])
-    assert.deepEqual(gamut.distances('blah', 'blah blah'), [])
+    assert.deepEqual(gamut.distances('C2', 'blah blah'), [null, null])
+    assert.deepEqual(gamut.distances(null, 'blah C2'), [])
   },
   'uniq': function () {
     assert.equal(gamut.uniq('C2 D3 E4 E3 D3 C2 B').join(' '), 'C2 D3 E4 E3 B')
@@ -69,10 +75,11 @@ vows.describe('gamut').addBatch({
   'binarySet': function () {
     assert.equal(gamut.binarySet('C D E').length, 12)
     assert.equal(gamut.binarySet('C D E'), '101010000000')
+    assert.equal(gamut.binarySet('C D E F G A B'), '101011010101')
   },
   'fromBinarySet': function () {
     assert.equal(gamut.fromBinarySet(2773).join(' '), 'C D E F G A B')
-    assert.equal(gamut.fromBinarySet(2773, 'Bb2').join(' '), 'Bb C D Eb F G A')
+    assert.deepEqual(gamut.fromBinarySet(2773, 'Bb2'), ['Bb', 'C', 'D', 'Eb', 'F', 'G', 'A'])
     assert.equal(gamut.fromBinarySet('100100000000', 'D').join(' '), 'D F')
     assert.deepEqual(gamut.fromBinarySet('NaN', 'Bb2'), [])
   }

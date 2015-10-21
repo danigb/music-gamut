@@ -7,7 +7,7 @@
 [![npm version](https://badge.fury.io/js/music-gamut.svg)](https://badge.fury.io/js/music-gamut)
 [![pitch-array](https://img.shields.io/badge/pitch--array-compatible-yellow.svg)](https://github.com/danigb/pitch-array)
 
-`music-gamut` is a javascript library to manipulate groups of notes or intervals fast and easy:
+`music-gamut` is a javascript library to manipulate notes (or intervals):
 
 ```js
 gamut.pitchSet('C2 D3 C4 E5') // => ['C', 'D', 'E']
@@ -15,6 +15,7 @@ gamut.transpose('2M', 'C D E F G') // => ['D', 'E', 'F#', 'G', 'A']
 gamut.distances('C2', 'C3 C4') // => ['8P', '15P']
 ```
 
+It's fast, easy and side-effects free (all pure functions).
 
 ## Install
 
@@ -40,15 +41,23 @@ gamut.intervals('1 2 3 blah 4 5') // => ['1P', '2M', '3M', null, '4P', '5P']
 
 You have a collection of funtions to manipulate the lists. All the functions returns a new copy of the list (no mutations):
 
-- sort: order notes by frequency in ascending order
-- uniq: remove duplicates and nulls
-- pitchClasses: remove the octaves from the notes
 - transpose: transpose a list of notes by an interval
 - add: add an interval to a list of intervals
+- distances: get distances of the gamut from a note
+- pitchSet: get the pitch set from the gamut
+- intervalSet: get the interval set from the gamut
+- uniq: remove duplicates and nulls
+- pitchClasses: remove the octaves from the notes
+
+(... and some more. Read the [docs](https://github.com/danigb/music-gamut/blob/master/API.md))
+
+## What is this for?
+
+See [music-scale](https://github.com/danigb/music-scale), [music-chord](https://github.com/danigb/music-chord) or [tonal](https://github.com/danigb/tonal)
 
 ## Documentation
 
-[Documentation here](https://github.com/danigb/music-gamut/blob/master/API.md)
+[Generated API documentation is here](https://github.com/danigb/music-gamut/blob/master/API.md)
 
 ## License
 
