@@ -3,12 +3,10 @@
 var op = require('pitch-op')
 
 // pitch to pitch classes
-function pitchClass (p) { return p ? [p[0], p[1], null] : null }
-function pitchClasses (gamut) { return gamut.map(pitchClass) }
+function pitchClasses (gamut) { return gamut.map(op.pitchClass) }
 
 // simplify interval
-function simple (p) { return p ? [p[0], p[1], 0] : null }
-function simplify (gamut) { return gamut.map(simple) }
+function simplify (gamut) { return gamut.map(op.simplify) }
 
 // return pitch heights: distance from C0 or interval semitones
 function heights (gamut) { return gamut.map(op.semitones) }
@@ -55,7 +53,7 @@ function intervalSet (gamut) {
 
 // get a pitch set
 function pitchSet (gamut) {
-  return transpose(pitchClass(gamut[0]), intervalSet(gamut))
+  return transpose(op.pitchClass(gamut[0]), intervalSet(gamut))
 }
 
 function binarySet (gamut) {

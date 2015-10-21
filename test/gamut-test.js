@@ -36,6 +36,7 @@ vows.describe('gamut').addBatch({
   },
   'transpose': function () {
     assert.deepEqual(gamut.transpose('2M', 'C D E'), [ 'D', 'E', 'F#' ])
+    assert.deepEqual(gamut.transpose('8P', 'C1 blah E2'), ['C2', null, 'E3'])
     assert.deepEqual(gamut.transpose('blah', 'C D E'), [])
   },
   'heights': function () {
