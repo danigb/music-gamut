@@ -51,7 +51,7 @@ _All functions are pure (no side effects, no mutations) so they allways returns 
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L193">lineno 193</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L225">lineno 225</a>
 </li>
 </ul></dd>
 </dl>
@@ -74,6 +74,8 @@ Type
 <dd>
 <div class="description">
 <p>Get the distances (in intervals) of the notes from a tonic</p>
+<p><strong>Important</strong>: al pitch classes are converted to octave 0 before calculating
+the distances.</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -129,6 +131,11 @@ Type
 <span class="param-type">Array.&lt;String></span>
 </dd>
 </dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>gamut.distance('D2', 'D2 E2 F2') // => ['1P', '2M', '3m']
+// pitch classes are octave 0
+gamut.distance('C', 'C2') // => ['15P']
+gamut.distance('C2', 'C') // => ['-15P']</code></pre>
 </dd>
 <dt>
 <h4 class="name" id="fromBinarySet"><span class="type-signature"></span>fromBinarySet<span class="signature">(source, tonic)</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
@@ -173,7 +180,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L205">lineno 205</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L237">lineno 237</a>
 </li>
 </ul></dd>
 </dl>
@@ -401,7 +408,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L169">lineno 169</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L201">lineno 201</a>
 </li>
 </ul></dd>
 </dl>
@@ -616,7 +623,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L181">lineno 181</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L213">lineno 213</a>
 </li>
 </ul></dd>
 </dl>
@@ -685,6 +692,61 @@ Type
 <span class="param-type">Array.&lt;String></span>
 </dd>
 </dl>
+</dd>
+<dt>
+<h4 class="name" id="sortByFreq"><span class="type-signature"></span>sortByFreq<span class="signature">(source)</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
+</dt>
+<dd>
+<div class="description">
+<p>Sort notes in ascending frequency (pitch) order</p>
+</div>
+<h5>Parameters:</h5>
+<table class="params">
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th class="last">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="name"><code>source</code></td>
+<td class="type">
+<span class="param-type">String</span>
+|
+<span class="param-type">Array</span>
+|
+<span class="param-type">Array.&lt;Array></span>
+</td>
+<td class="description last"><p>the gamut</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="details">
+<dt class="tag-source">Source:</dt>
+<dd class="tag-source"><ul class="dummy">
+<li>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
+<span>, </span>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L178">lineno 178</a>
+</li>
+</ul></dd>
+</dl>
+<h5>Returns:</h5>
+<div class="param-desc">
+<p>the sorted notes or intervals</p>
+</div>
+<dl>
+<dt>
+Type
+</dt>
+<dd>
+<span class="param-type">Array.&lt;String></span>
+</dd>
+</dl>
+<h5>Example</h5>
+<pre class="prettyprint"><code>gamut.sortByFreq('D E F G C') // => ['C', 'D', E', F', 'G']</code></pre>
 </dd>
 <dt>
 <h4 class="name" id="transpose"><span class="type-signature"></span>transpose<span class="signature">(interval, source)</span><span class="type-signature"> &rarr; {Array.&lt;Integer>}</span></h4>
@@ -784,7 +846,7 @@ Type
 <li>
 <a href="https://github.com/danigb/music-gamut/blob/master/gamut.js">gamut.js</a>
 <span>, </span>
-<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L157">lineno 157</a>
+<a href="https://github.com/danigb/music-gamut/blob/master/gamut.js#L166">lineno 166</a>
 </li>
 </ul></dd>
 </dl>
